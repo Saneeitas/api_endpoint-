@@ -73,15 +73,17 @@ const login = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
+const getUsersExact = async (req, res) => {
   try {
     const { dateAdded, firstName, lastName } = req.query;
 
     // Construct a filter object based on provided options
     const filter = {};
+
     if (dateAdded) {
       // Check if the dateAdded parameter is a valid ISO 8601 date
       if (/^\d{4}-\d{2}-\d{2}$/.test(dateAdded)) {
+        // If it's a valid date, construct a date range for the day
         const startDate = new Date(dateAdded);
         const endDate = new Date(dateAdded);
         endDate.setDate(endDate.getDate() + 1);
@@ -93,12 +95,57 @@ const getUsers = async (req, res) => {
           .json({ error: "Invalid date format for dateAdded" });
       }
     }
+
+    if (firstName) {
+      filter.firstName = firstName;
+    }
+
+    if (lastName) {
+      filter.lastName = lastName;
+    }
+
+    const users = await User.find(filter, "-password");
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No user records found" });
+    }
+
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getUsersRegex = async (req, res) => {
+  try {
+    const { dateAdded, firstName, lastName } = req.query;
+
+    // Construct a filter object based on provided options
+    const filter = {};
+
+    if (dateAdded) {
+      // Check if the dateAdded parameter is a valid ISO 8601 date
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateAdded)) {
+        // If it's a valid date, construct a date range for the day
+        const startDate = new Date(dateAdded);
+        const endDate = new Date(dateAdded);
+        endDate.setDate(endDate.getDate() + 1);
+
+        filter.dateAdded = { $gte: startDate, $lt: endDate };
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Invalid date format for dateAdded" });
+      }
+    }
+
     if (firstName) {
       filter.firstName = new RegExp(firstName, "i");
     }
 
     if (lastName) {
-      filter.lastName = lastName;
+      filter.lastName = new RegExp(lastName, "i");
     }
 
     // Fetch users based on the constructed filter
@@ -110,13 +157,13 @@ const getUsers = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 module.exports = {
   login,
-  getUsers,
   register,
+  getUsersRegex,
+  getUsersExact,
 };
