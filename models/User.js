@@ -1,12 +1,19 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+const postSchema = new mongoose.Schema({
+  title: String,
+  content: String,
+  createdAt: { type: Date, default: Date.now },
+});
+
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   dateAdded: { type: Date, default: Date.now },
+  posts: [postSchema], // Establishing a one-to-many relationship with posts
 });
 
 // Hash the password before saving it to the database
