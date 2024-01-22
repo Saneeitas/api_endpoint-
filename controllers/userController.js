@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const authService = require("../services/authService");
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { firstName, lastName, username, password } = req.body;
 
@@ -26,12 +26,11 @@ const register = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
@@ -68,12 +67,11 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+     next(error);
   }
 };
 
-const getUsersExact = async (req, res) => {
+const getUsersExact = async (req, res, next) => {
   try {
     const { dateAdded, firstName, lastName } = req.query;
 
@@ -112,12 +110,11 @@ const getUsersExact = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    next(error);
   }
 };
 
-const getUsersRegex = async (req, res) => {
+const getUsersRegex = async (req, res, next) => {
   try {
     const { dateAdded, firstName, lastName } = req.query;
 
@@ -157,12 +154,11 @@ const getUsersRegex = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+     next(error);
   }
 };
 
-const getUsersByDateAdded = async (req, res) => {
+const getUsersByDateAdded = async (req, res, next) => {
   try {
     const { dateAdded } = req.query;
 
@@ -186,12 +182,11 @@ const getUsersByDateAdded = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+     next(error);
   }
 };
 
-const getUsersByFirstName = async (req, res) => {
+const getUsersByFirstName = async (req, res, next) => {
   try {
     const { firstName } = req.query;
 
@@ -205,12 +200,11 @@ const getUsersByFirstName = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+     next(error);
   }
 };
 
-const getUsersByLastName = async (req, res) => {
+const getUsersByLastName = async (req, res, next) => {
   try {
     const { lastName } = req.query;
 
@@ -224,12 +218,11 @@ const getUsersByLastName = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+     next(error);
   }
 };
 
-const addPostToUser = async (req, res) => {
+const addPostToUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { title, content } = req.body;
@@ -245,16 +238,15 @@ const addPostToUser = async (req, res) => {
 
     res.json(user.posts);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    next(error);
   }
 };
 
-const getUsersWithPosts = async (req, res) => {
+const getUsersWithPosts = async (req, res, next) => {
   try {
     const usersWithPosts = await User.find()
       .populate("posts", "-_id")
-      .select("-password");; 
+      .select("-password");
 
     if (usersWithPosts.length === 0) {
       return res.status(404).json({ error: "No user records found" });
@@ -262,8 +254,7 @@ const getUsersWithPosts = async (req, res) => {
 
     res.json(usersWithPosts);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+     next(error);
   }
 };
 

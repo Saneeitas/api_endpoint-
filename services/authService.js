@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "api_endpoint_secret";
-
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, JWT_SECRET);
+  return jwt.sign({ userId }, process.env.JWT_SECRET);
 };
 
 module.exports = {
