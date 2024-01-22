@@ -8,5 +8,7 @@ router.post("/login", userController.login);
 router.get("/users/exact", userController.getUsersExact);
 router.get("/users/regex", userController.getUsersRegex);
 router.get("/users/by-dateAdded", userController.getUsersByDateAdded);
+router.get("/users/by-firstName", userController.getUsersByFirstName);
+router.get("/users/by-lastName", userController.getUsersByLastName);
 
 module.exports = router;

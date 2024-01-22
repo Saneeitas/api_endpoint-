@@ -191,10 +191,50 @@ const getUsersByDateAdded = async (req, res) => {
   }
 };
 
+const getUsersByFirstName = async (req, res) => {
+  try {
+    const { firstName } = req.query;
+
+    const filter = firstName ? { firstName: new RegExp(firstName, "i") } : {};
+
+    const users = await User.find(filter, "-password");
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No user records found" });
+    }
+
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getUsersByLastName = async (req, res) => {
+  try {
+    const { lastName } = req.query;
+
+    const filter = lastName ? { lastName: new RegExp(lastName, "i") } : {};
+
+    const users = await User.find(filter, "-password");
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No user records found" });
+    }
+
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   login,
   register,
   getUsersRegex,
   getUsersExact,
   getUsersByDateAdded,
+  getUsersByFirstName,
+  getUsersByLastName,
 };
