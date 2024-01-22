@@ -250,6 +250,23 @@ const addPostToUser = async (req, res) => {
   }
 };
 
+const getUsersWithPosts = async (req, res) => {
+  try {
+    const usersWithPosts = await User.find()
+      .populate("posts", "-_id")
+      .select("-password");; 
+
+    if (usersWithPosts.length === 0) {
+      return res.status(404).json({ error: "No user records found" });
+    }
+
+    res.json(usersWithPosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -259,4 +276,5 @@ module.exports = {
   getUsersByFirstName,
   getUsersByLastName,
   addPostToUser,
+  getUsersWithPosts,
 };

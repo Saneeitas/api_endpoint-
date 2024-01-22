@@ -11,5 +11,6 @@ router.get("/users/by-dateAdded", userController.getUsersByDateAdded);
 router.get("/users/by-firstName", userController.getUsersByFirstName);
 router.get("/users/by-lastName", userController.getUsersByLastName);
 router.post("/users/:userId/posts", userController.addPostToUser);
+router.get("/users/with-posts", userController.getUsersWithPosts);
 
 module.exports = router;
