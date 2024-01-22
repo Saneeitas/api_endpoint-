@@ -6,6 +6,35 @@ const register = async (req, res, next) => {
   try {
     const { firstName, lastName, username, password } = req.body;
 
+     if (!firstName || !username || !username || !password) {
+       return res.status(400).json({ error: "All fields are required" });
+     }
+    // Validate username using a regular expression (alphanumeric characters only)
+    const isAlphanumeric = /^[a-zA-Z0-9]+$/.test(username);
+    if (!isAlphanumeric) {
+      return res.status(400).json({ error: "Invalid username format" });
+    }
+
+    // Validate first name using a regular expression (allow letters and spaces)
+    const isValidFirstName = /^[a-zA-Z\s]+$/.test(firstName);
+    if (!isValidFirstName) {
+      return res.status(400).json({ error: "Invalid first name format" });
+    }
+
+    // Validate last name using a regular expression (allow letters and spaces)
+    const isValidLastName = /^[a-zA-Z\s]+$/.test(lastName);
+    if (!isValidLastName) {
+      return res.status(400).json({ error: "Invalid last name format" });
+    }
+
+    // Validate password using a regular expression (at least 6 characters)
+    const isValidPassword = /.{6,}/.test(password);
+    if (!isValidPassword) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters" });
+    }
+
     const lowercaseUsername = username.toLowerCase();
 
     const existingUser = await User.findOne({ username: lowercaseUsername });
@@ -67,7 +96,7 @@ const login = async (req, res, next) => {
       token,
     });
   } catch (error) {
-     next(error);
+    next(error);
   }
 };
 
@@ -154,7 +183,7 @@ const getUsersRegex = async (req, res, next) => {
 
     res.json(users);
   } catch (error) {
-     next(error);
+    next(error);
   }
 };
 
@@ -182,7 +211,7 @@ const getUsersByDateAdded = async (req, res, next) => {
 
     res.json(users);
   } catch (error) {
-     next(error);
+    next(error);
   }
 };
 
@@ -200,7 +229,7 @@ const getUsersByFirstName = async (req, res, next) => {
 
     res.json(users);
   } catch (error) {
-     next(error);
+    next(error);
   }
 };
 
@@ -218,7 +247,7 @@ const getUsersByLastName = async (req, res, next) => {
 
     res.json(users);
   } catch (error) {
-     next(error);
+    next(error);
   }
 };
 
@@ -254,7 +283,7 @@ const getUsersWithPosts = async (req, res, next) => {
 
     res.json(usersWithPosts);
   } catch (error) {
-     next(error);
+    next(error);
   }
 };
 
