@@ -36,7 +36,8 @@ Routes
 - Method: POST
 - Description: Register a new user.
 - Request:
-``` {
+```
+ {
   "firstName": "John",
   "lastName": "Doe",
   "username": "john_doe",
@@ -44,7 +45,8 @@ Routes
   }
   ```
   - Response:
-```{
+```
+ {
   "token": "your generate jwt token"
   }
 ```
