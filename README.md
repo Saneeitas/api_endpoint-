@@ -54,7 +54,8 @@ Routes
 - Method: POST
 - Description: Login a user, Authenticate an existing user.
 - Request:
-``` {
+```
+{
   "user": {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
@@ -66,9 +67,10 @@ Routes
 }
   ```
   - Response:
-```{
+```
+{
   "token": "your generate jwt token"
-  }
+}
 ```
 
 ## User Operations
@@ -82,7 +84,8 @@ Routes
     - firstName (optional): Filter users by first name.
     - lastName (optional): Filter users by last name.
 - Response:
-```[
+```
+[
   {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
@@ -102,7 +105,8 @@ Routes
     - firstName (optional): Filter users by first name using regex.
     - lastName (optional): Filter users by last name using regex.
 - Response:
-```[
+```
+[
   {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
@@ -121,7 +125,8 @@ Routes
 - Query Parameter
     - dateAdded (required): Filter users by date added.
 - Response:
-```[
+```
+[
   {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
@@ -140,7 +145,8 @@ Routes
 - Query Parameter
     - firstName (required): Filter users  first name.
 - Response:
-```[
+```
+[
   {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
@@ -159,7 +165,8 @@ Routes
 - Query Parameter
     - lastName (required): Filter users last name..
 - Response:
-```[
+```
+[
   {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
@@ -178,13 +185,15 @@ Routes
 - Path Parameter:
       - userId (required): ID of the user to add a post to.
 - Request:
-```{
+```
+{
   "title": "New Post",
   "content": "This is the content of the new post."
 }
 ```
 - Response:
-```[
+```
+[
   {
     "title": "New Post",
     "content": "This is the content of the new post."
@@ -198,7 +207,8 @@ Routes
 - Method: GET
 - Description: Get users with their associated posts.
 - Response:
-```[
+```
+[
   {
     "_id": "5f26710c09524500170591bb",
     "firstName": "John",
